@@ -15,7 +15,7 @@
 
 Tribbe es una aplicación social minimalista diseñada específicamente para la comunidad *gym bro*, combinando el seguimiento de entrenamientos con funciones sociales locales basadas en gimnasios. La app se posiciona como la primera plataforma que une la simplicidad de Strong con las funciones sociales de Strava, enfocándose exclusivamente en levantamiento de pesas y competencia local.
 
-**Propuesta de Valor Única:** Simplicidad extrema + Social local (gimnasio) + Gamificación competitiva
+**Propuesta de Valor Única:** "Compite con los mejores de tu gym" - La única app que te dice exactamente cómo te comparas con otros en tu gimnasio específico.
 
 ---
 
@@ -41,12 +41,14 @@ Conectar y motivar a la comunidad fitness a través de una plataforma social sim
 
 ### 1.4 Personas y Segmentos de Usuario
 
-#### Persona Principal: "El Gym Bro Competitivo"
-- **Edad:** 18-35 años
+#### Persona Principal: "El Intermediate Lifter"
+- **Edad:** 22-28 años
 - **Género:** 70% masculino, 30% femenino
-- **Experiencia:** 1-5 años en el gym
-- **Motivación:** Competencia, progreso personal, comunidad
-- **Pain Points:** Apps complejas, falta de competencia local, tracking manual
+- **Experiencia:** 1-3 años levantando (ya no es novato, pero tampoco competidor serio)
+- **Motivación:** Validación social, saber si su progreso es "bueno", competencia sana
+- **Pain Points:** No sabe si sus números son buenos comparado con otros, falta feedback real
+- **Quote:** "¿Mi bench de 100kg está bien para mi peso? ¿Quién más en mi gym levanta eso?"
+- **Contexto:** Es el segmento más grande y el más necesitado de validación social. Los novatos progresan muy rápido, los avanzados ya tienen coaches.
 
 #### Persona Secundaria: "El Gym Bro Principiante"
 - **Edad:** 16-25 años
@@ -56,21 +58,25 @@ Conectar y motivar a la comunidad fitness a través de una plataforma social sim
 
 ### 1.5 Historias de Usuario
 
-#### Epic 1: Registro y Perfil
-- **US-001:** Como gym bro principiante, quiero crear un perfil básico con mi información y gimnasio para conectar con otros usuarios
-- **US-002:** Como usuario, quiero personalizar mi perfil con mi foto, objetivos y estadísticas principales para mostrar mi progreso
+#### Epic 1: Aha Moment - Comparación Social (P0)
+- **US-001:** Como intermediate lifter, quiero ver inmediatamente cómo se comparan mis lifts con mis amigos para saber si estoy progresando bien
+- **US-002:** Como usuario, quiero agregar amigos ilimitados para expandir mi red social y tener más comparaciones
+- **US-003:** Como gym bro, quiero que mi primer uso de la app me muestre el valor en menos de 2 minutos
 
-#### Epic 2: Seguimiento de Entrenamientos
-- **US-003:** Como gym bro principiante, quiero registrar mis ejercicios de forma rápida y ver mi progreso visual para mantenerme motivado
-- **US-004:** Como usuario activo, quiero un registro simple de entrenamientos sin funciones de nutrición o cardio para enfocarme en fuerza
+#### Epic 2: Seguimiento Básico (P0)
+- **US-004:** Como usuario, quiero registrar mis sets de forma súper rápida (máximo 3 taps por set)
+- **US-005:** Como intermediate lifter, quiero ver mi historial personal simple para trackear progreso
+- **US-006:** Como usuario, quiero notificaciones cuando mis amigos logran PRs para mantenerme motivado
 
-#### Epic 3: Competencia Social
-- **US-005:** Como gym bro experimentado, quiero competir con mis amigos del gimnasio comparando nuestras marcas para motivarme
-- **US-006:** Como gym bro competitivo, quiero ver rankings de mi gimnasio para saber quién levanta más peso en cada ejercicio
+#### Epic 3: Viral Features (P1)
+- **US-007:** Como usuario, quiero participar en "Weekly Gym Battle" para competir temporalmente con mi gym
+- **US-008:** Como gym bro, quiero pedir un spotter cuando estoy en el gym y necesito ayuda
+- **US-009:** Como usuario, quiero validar los PRs de otros usuarios cuando los veo hacer en persona
 
-#### Epic 4: Comunidad Local
-- **US-007:** Como miembro de gimnasio, quiero conectar con otros usuarios de mi gym para formar grupos y compartir consejos
-- **US-008:** Como usuario, quiero buscar y agregar amigos por gimnasio para expandir mi red social fitness
+#### Epic 4: Rankings y Competencia (P1)
+- **US-010:** Como usuario premium, quiero aparecer en rankings de mi gimnasio para mostrar mis logros
+- **US-011:** Como intermediate lifter, quiero ver rankings de mi gym para saber en qué posición estoy
+- **US-012:** Como usuario, quiero un trust score que refleje la veracidad de mis estadísticas
 
 ### 1.6 Análisis Competitivo
 
@@ -171,6 +177,48 @@ Conectar y motivar a la comunidad fitness a través de una plataforma social sim
 - **REQ-024:** Administración de gimnasios
 - **REQ-025:** Estadísticas de gimnasio
 
+### 2.2.1 Features Virales (P1)
+
+#### Weekly Gym Battle ⚔️
+**Concepto:** Cada lunes, el sistema selecciona automáticamente un ejercicio y todos los usuarios de ese gym tienen la semana para registrar su mejor set. El viernes se anuncia el Top 3.
+
+**Flujo:**
+1. Lunes: Notificación "¡Esta semana toca Bench Press Battle!"
+2. Usuarios registran su mejor set durante la semana
+3. Viernes: "🏆 Top 3 Bench Press esta semana: 1º Juan (120kg), 2º María (110kg), 3º Pedro (100kg)"
+4. Ganadores obtienen badge visible por 1 semana
+5. Se puede compartir resultado en stories
+
+**Por qué funciona:**
+- Escasez temporal: Solo tienes una semana
+- FOMO: Si no participas, te pierdes el badge
+- Social proof: Más fácil compartir "2do lugar" que un PR random
+- Retention: Te da razón para volver cada semana
+
+#### Spot Request 🔥
+**Concepto:** Botón "Necesito Spot" que manda notificación a usuarios de tu gym activos EN ESE MOMENTO.
+
+**Flujo:**
+1. Usuario presiona "Necesito Spot" 
+2. Sistema envía push a usuarios del gym que estén activos en la app
+3. Los que aceptan ven ubicación aproximada del usuario
+4. Después del spot, ambos pueden validar el PR mutuamente
+5. PRs validados obtienen badge especial
+
+**Por qué es genial:**
+- Resuelve un problema REAL que la gente tiene HOY
+- Crea interacciones reales, no solo digitales
+- Construye comunidad orgánicamente
+- Es el único feature que REQUIERE que estés en el gym físicamente
+
+#### Gym Soundtrack 🎵
+**Concepto:** Cada día, un usuario de tu gym puede nominar "la canción del día". Aparece en el feed, la más votada se corona, se crea playlist colaborativa.
+
+**Por qué funciona:**
+- Engagement diario sin requerir entrenar
+- Bajo esfuerzo (solo votar)
+- Crea identidad de gym ("en mi gym solo escuchamos metal 🤘")
+
 ### 2.3 Requerimientos No Funcionales
 
 #### Rendimiento
@@ -208,10 +256,13 @@ Registro → Perfil → Gimnasio → Entrenamiento → Compartir → Competir
 
 #### Pantallas Clave
 
-**1. Onboarding (3 pantallas)**
-- Bienvenida con propuesta de valor
-- Selección de gimnasio
-- Configuración de perfil básico
+**1. Onboarding Optimizado para Aha Moment (4 pantallas)**
+- **Pantalla 1:** "¿Cuánto levantas en bench?" (input rápido, sin registro)
+- **Pantalla 2:** "Busca un amigo para comparar" (agregar primer amigo)
+- **Pantalla 3:** "Tu amigo levanta 20kg más. ¡Hora de entrenar!" (AHA MOMENT!)
+- **Pantalla 4:** Completa perfil (opcional, después del valor)
+
+**Lógica:** Muestra el valor ANTES de pedir esfuerzo. La gente necesita ver POR QUÉ tu app es diferente en los primeros 30 segundos.
 
 **2. Dashboard Principal**
 - Header: Logo + Notificaciones + Perfil
@@ -328,18 +379,25 @@ Rankings (id, gym_id, exercise_id, user_id, max_weight, date)
 
 ### 3.1 Métricas de Producto (KPIs)
 
-#### Métricas de Adquisición
-- **Usuarios registrados:** 1,000 en el primer mes
-- **Tasa de conversión registro:** > 15% (visitantes → usuarios)
-- **Usuarios activos mensuales (MAU):** 10,000 en 6 meses
-- **Usuarios activos diarios (DAU):** 4,000 en 6 meses (40% de MAU)
+#### Métricas de Adquisición (Realistas)
+- **Usuarios registrados:** 500 en el primer mes (no 1,000)
+- **Tasa de conversión registro:** > 10% (visitantes → usuarios)
+- **Usuarios activos mensuales (MAU):** 5,000 en 6 meses (no 10,000)
+- **Usuarios activos diarios (DAU):** 1,500 en 6 meses (30% de MAU, no 40%)
 
-#### Métricas de Engagement
-- **Sesiones por usuario/semana:** > 3
-- **Tiempo promedio en app:** > 8 minutos/sesión
-- **Retención D1:** > 60%
-- **Retención D7:** > 35%
-- **Retención D30:** > 20%
+#### Métricas de Engagement (Realistas para Social App)
+- **Sesiones por usuario/semana:** > 2 (no 3)
+- **Tiempo promedio en app:** > 5 minutos/sesión (no 8)
+- **Retención D1:** > 45% (no 60%)
+- **Retención D7:** > 20% (no 35%)
+- **Retención D30:** > 12% (no 20%)
+
+#### Métricas de Éxito MVP (Primeros 3 meses)
+- **500 usuarios registrados** (validación de concepto)
+- **100 usuarios activos semanales (WAU)**
+- **50 entrenamientos registrados por semana**
+- **20 comparaciones entre amigos por semana**
+- **Si logras esto, tienes validación de producto**
 
 #### Métricas de Social
 - **Amigos promedio por usuario:** > 5
@@ -368,52 +426,73 @@ Rankings (id, gym_id, exercise_id, user_id, max_weight, date)
 
 ## 🗓️ 4. Roadmap de Desarrollo
 
-### Fase 1: MVP (Mes 1-2)
-**Objetivo:** Lanzar versión básica funcional
+### Fase 1: MVP Ultra-Simplificado (4 semanas)
+**Objetivo:** Validar el "Aha Moment" - que la gente QUIERA compararse con amigos
 
-#### Sprint 1 (Semanas 1-2)
+#### Sprint 1 (Semana 1-2): Core Social
 - [ ] Setup del proyecto Flutter
-- [ ] Autenticación básica (email/password)
-- [ ] Perfil de usuario básico
-- [ ] Catálogo de ejercicios (20 ejercicios principales)
+- [ ] Login con Google/Apple (30 segundos)
+- [ ] Perfil básico (nombre, foto)
+- [ ] Lista de 10 ejercicios principales
+- [ ] Registro súper rápido de sets (peso, reps)
+- [ ] Ver historial personal
 
-#### Sprint 2 (Semanas 3-4)
-- [ ] Registro de entrenamientos
-- [ ] Historial básico
-- [ ] Cálculo de 1RM
-- [ ] UI/UX básica
+#### Sprint 2 (Semana 3-4): Comparación Social
+- [ ] Agregar amigos por username
+- [ ] Ver entrenamientos de amigos en feed
+- [ ] Comparar tu mejor set vs el mejor de un amigo
+- [ ] Notificaciones push cuando amigos logran PRs
+- [ ] Onboarding optimizado para mostrar valor en 2 minutos
 
-#### Sprint 3 (Semanas 5-6)
-- [ ] Sistema de amigos básico
-- [ ] Feed de actividad
-- [ ] Compartir entrenamientos
-- [ ] Testing y bug fixes
+**Features ELIMINADOS del MVP:**
+❌ Gimnasios (añadir en v1.1)
+❌ Rankings públicos (añadir en v1.1)
+❌ 1RM calculado (añadir en v1.2)
+❌ Gráficos complejos (añadir en v1.2)
+❌ Competencias (añadir en v1.3)
 
-#### Sprint 4 (Semanas 7-8)
-- [ ] Rankings básicos
-- [ ] Notificaciones push
-- [ ] Optimizaciones de rendimiento
-- [ ] Preparación para lanzamiento
+**Lógica:** Primero valida que la gente QUIERE compararse con amigos. Si eso funciona, construyes sobre eso.
 
-### Fase 2: Social & Competencia (Mes 3-4)
-**Objetivo:** Funciones sociales y competitivas
+### Fase 2: Features Virales & Gimnasios (Mes 2-3)
+**Objetivo:** Añadir elementos virales y resolver el problema del huevo y la gallina
+
+#### Funcionalidades Virales
+- [ ] **Weekly Gym Battle** ⚔️ - Competencia semanal automática por ejercicio
+- [ ] **Spot Request** 🔥 - Pedir spotter a usuarios activos en tu gym
+- [ ] **Gym Soundtrack** 🎵 - Playlist colaborativa diaria del gym
+- [ ] **Trust Score System** - Validación social de estadísticas
+
+#### Sistema de Gimnasios Simplificado
+- [ ] Selección de gym por nombre (sin verificación inicial)
+- [ ] Social proof: mostrar cuántos usuarios están en cada gym
+- [ ] Sistema de validación por foto + geolocalización
+- [ ] Rankings básicos por gimnasio
+
+#### Lógica Anti-Huevo-y-Gallina:
+1. **Fase 1:** Sin verificación de gym. Los usuarios se unen por nombre
+2. **Fase 2:** Una vez tengas 1,000+ usuarios, implementas validación
+3. **Incentivo:** Primeros 10 gyms verificados obtienen analytics gratis
+
+### Fase 3: Rankings & Monetización (Mes 4-5)
+**Objetivo:** Implementar rankings públicos y sistema de pago
 
 #### Funcionalidades
-- [ ] Sistema de gimnasios con QR
-- [ ] Rankings avanzados por gimnasio
-- [ ] Competencias temporales
-- [ ] Sistema de logros y badges
-- [ ] Comparación de estadísticas entre amigos
+- [ ] Rankings públicos por gimnasio (feature premium)
+- [ ] Sistema de pago integrado
+- [ ] Estadísticas avanzadas y gráficos
+- [ ] Competencias temporales exclusivas
+- [ ] Modo offline básico
+- [ ] Analytics avanzados
 
-### Fase 3: Escalabilidad (Mes 5-6)
+### Fase 4: Escalabilidad (Mes 6-8)
 **Objetivo:** Optimización y crecimiento
 
 #### Funcionalidades
-- [ ] Modo offline
-- [ ] Estadísticas avanzadas
-- [ ] Integración con redes sociales
-- [ ] Sistema de monetización (freemium)
-- [ ] Analytics avanzados
+- [ ] B2B SaaS para gimnasios ($99/mes)
+- [ ] Integración con wearables
+- [ ] Competencias globales
+- [ ] API pública
+- [ ] Web app
 
 ### Fase 4: Expansión (Mes 7-12)
 **Objetivo:** Crecimiento y nuevas funcionalidades
@@ -478,21 +557,25 @@ Rankings (id, gym_id, exercise_id, user_id, max_weight, date)
 
 ### 6.1 Estrategia de Monetización
 
-#### Modelo Freemium
+#### Modelo Freemium (Rediseñado para Viralidad)
 **Gratis:**
-- Registro de entrenamientos básico
-- 5 amigos máximo
-- Rankings básicos
-- 1 gimnasio
+- Amigos ilimitados ✨ (KEY: No limitar viralidad)
+- Registro básico de entrenamientos
+- Ver rankings de tu gym (pero no participar)
+- Ver feed de amigos
+- Comparar con amigos
+- Notificaciones de PRs de amigos
 
 **Premium ($4.99/mes):**
-- Estadísticas avanzadas
-- Amigos ilimitados
-- Rankings detallados
+- **Participar en rankings públicos** (KEY FEATURE: La gente quiere ver su nombre)
+- Estadísticas avanzadas (gráficos históricos, predicciones)
+- Competencias temporales exclusivas (Weekly Gym Battle)
 - Múltiples gimnasios
-- Competencias exclusivas
-- Sin anuncios
 - Exportar datos
+- Sin anuncios
+- Validación de PRs con trust score
+
+**Psicología del Modelo:** Los usuarios pueden VER los rankings pero no aparecer. Esto crea FOMO y es un incentivo poderoso para pagar. La gente quiere validación social pública.
 
 ### 6.2 Revenue Streams
 
@@ -512,47 +595,54 @@ Rankings (id, gym_id, exercise_id, user_id, max_weight, date)
 - Productos fitness
 - Eventos deportivos
 
-### 6.3 Proyecciones Financieras
+### 6.3 Proyecciones Financieras (Realistas)
 
 #### Año 1
-- **Usuarios:** 10,000 MAU
-- **Premium:** 2,000 usuarios (20%)
-- **Revenue mensual:** $10,000
-- **Revenue anual:** $120,000
+- **Usuarios:** 5,000 MAU (no 10,000)
+- **Premium:** 250 usuarios (5% conversión, no 20%)
+- **Revenue mensual:** $1,250 (no $10,000)
+- **Revenue anual:** $15,000 (no $120,000)
 
 #### Año 2
-- **Usuarios:** 50,000 MAU
-- **Premium:** 10,000 usuarios (20%)
-- **Revenue mensual:** $50,000
-- **Revenue anual:** $600,000
+- **Usuarios:** 25,000 MAU (no 50,000)
+- **Premium:** 1,250 usuarios (5% conversión)
+- **Revenue mensual:** $6,250 (no $50,000)
+- **Revenue anual:** $75,000 (no $600,000)
+
+**Nota:** Estas proyecciones son más realistas para apps fitness freemium. El 5% de conversión es típico, no el 20% optimista. Pero $15K/año es suficiente para validar y seguir desarrollando.
 
 ---
 
 ## 🎯 7. Estrategia de Lanzamiento
 
-### 7.1 Fase de Pre-lanzamiento (Mes -1)
-- [ ] Beta testing con 100 usuarios
-- [ ] Feedback y iteración
-- [ ] Preparación de marketing
-- [ ] Partnerships con gimnasios piloto
+### 7.1 Estrategia "One Gym, Total Domination" (Mes 1-2)
+**Filosofía:** Es más fácil dominar 1 gym que estar "presente" en 20
 
-### 7.2 Lanzamiento Suave (Mes 0)
-- [ ] Lanzamiento en 5 gimnasios piloto
-- [ ] Marketing orgánico en redes sociales
-- [ ] Influencers fitness locales
-- [ ] PR en medios fitness
+#### Fase 1: MVP + 1 Gym (Mes 1-2)
+- [ ] **Escoge UN gimnasio** (el tuyo o donde tengas contactos)
+- [ ] **Objetivo:** 50 usuarios activos en ESE gym específico
+- [ ] **Táctica:** Presencia física, flyers, QR codes en el gym
+- [ ] **KPI:** 20% de los miembros del gym usando la app
+- [ ] **Identifica a los 3-5 "influencers" del gym** (los que todos conocen)
+- [ ] **Dales acceso beta exclusivo** y pídeles que inviten a sus círculos
 
-### 7.3 Lanzamiento Amplio (Mes 1+)
-- [ ] Expansión a 20+ gimnasios
-- [ ] Marketing pagado (Google Ads, Facebook)
-- [ ] Partnerships con influencers
-- [ ] Eventos en gimnasios
+#### Fase 2: Gym #2 (Mes 3-4)
+- [ ] **Solo DESPUÉS de lograr 50 activos en gym #1**
+- [ ] Replica el playbook exitoso
+- [ ] Los usuarios del gym #1 pueden ahora competir contra gym #2
+- [ ] Tu caso de éxito en gym #1 es tu mejor pitch para gym #2
 
-### 7.4 Estrategia de Crecimiento
-- **Referidos:** Programa de referidos con incentivos
-- **Viral:** Compartir PRs y logros
-- **Partnerships:** Acuerdos con gimnasios
+#### Lógica:
+- La competencia inter-gyms solo funciona si hay masa crítica en ambos
+- Tu caso de éxito en gym #1 es tu mejor pitch para gym #2
+- Es más fácil dominar 1 gym que estar "presente" en 20
+
+### 7.2 Estrategia de Crecimiento Post-Dominación
+- **Referidos:** Programa de referidos con incentivos (solo después de dominar 2 gyms)
+- **Viral:** Compartir PRs y logros + Weekly Gym Battle
+- **Partnerships:** Acuerdos con gimnasios (usando casos de éxito)
 - **Content:** Blog y redes sociales sobre fitness
+- **B2B SaaS:** "Tribbe for Gyms" ($99/mes) con analytics y promociones
 
 ---
 
@@ -571,17 +661,32 @@ Tribbe representa una oportunidad única en el mercado de aplicaciones fitness a
 3. **Simplicidad** que reduce fricción de adopción
 4. **Localización** que crea sentido de pertenencia
 
-### Próximos Pasos
-1. **Validar** el concepto con gimnasios piloto
-2. **Desarrollar** MVP en 2 meses
-3. **Lanzar** beta con 100 usuarios
-4. **Iterar** basado en feedback
-5. **Escalar** a 10,000+ usuarios en 6 meses
+### Próximos Pasos Concretos
 
-### Métricas de Éxito Clave
-- **10,000 MAU** en 6 meses
-- **40% DAU/MAU** ratio
-- **$10,000 MRR** en 6 meses
-- **20% conversión** a premium
+#### Antes de escribir una línea de código:
+
+**1. Valida el problema (esta semana):**
+- Ve a tu gym
+- Pregunta a 20 personas: "¿Te gustaría saber cómo se comparan tus lifts con otros del gym?"
+- Si menos de 15 dicen "sí", replantea el concepto
+
+**2. Prototipo en papel (siguiente semana):**
+- Dibuja las 5 pantallas del MVP en papel
+- Muéstraselas a 10 gym bros
+- Pregunta: "¿Usarías esto?"
+- Itera hasta que 8/10 digan "sí"
+
+**3. MVP en 4 semanas (no 8):**
+- Solo las features del MVP ultra-simplificado
+- Lanza con 1 gym
+- 50 usuarios objetivo
+- Si logras eso, tienes algo real. Si no, pivoteas rápido y barato.
+
+### Métricas de Éxito Clave (Realistas)
+- **5,000 MAU** en 6 meses (no 10,000)
+- **30% DAU/MAU** ratio (no 40%)
+- **$1,250 MRR** en 6 meses (no $10,000)
+- **5% conversión** a premium (no 20%)
+- **50 usuarios activos** en el primer gym como validación inicial
 
 **Tribbe no es solo otra app de fitness, es la plataforma social que la comunidad gym bro ha estado esperando.** 🏋️‍♂️💪
