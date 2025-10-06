@@ -8,6 +8,7 @@ import 'package:tribbe/controllers/auth_controller.dart';
 import 'package:tribbe/controllers/home_controller.dart';
 import 'package:tribbe/controllers/system/theme_controller.dart';
 import 'package:tribbe/controllers/system/language_controller.dart';
+import 'package:tribbe/controllers/system/gender_controller.dart';
 import 'package:tribbe/firebase_options.dart';
 
 void main() async {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeController()),
         ChangeNotifierProvider(create: (_) => ThemeController()),
         ChangeNotifierProvider(create: (_) => LanguageController()),
+        ChangeNotifierProvider(create: (_) => GenderController()),
       ],
       child: Consumer2<ThemeController, LanguageController>(
         builder: (context, themeController, languageController, child) {

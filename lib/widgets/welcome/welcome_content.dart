@@ -39,6 +39,7 @@ class WelcomeContent extends StatelessWidget {
 
             // Botón de acción
             WelcomeActionButton(
+              isDark: isDark,
               primaryColor: primaryColor,
               secondaryColor: secondaryColor,
               onPrimaryColor: onPrimaryColor,
@@ -91,11 +92,14 @@ class WelcomeActionButton extends StatelessWidget {
   final Color secondaryColor;
   final Color onPrimaryColor;
 
+  final bool isDark;
+
   const WelcomeActionButton({
     super.key,
     required this.primaryColor,
     required this.secondaryColor,
     required this.onPrimaryColor,
+    required this.isDark,
   });
 
   @override
@@ -105,7 +109,7 @@ class WelcomeActionButton extends StatelessWidget {
       height: 56,
       child: ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, AppRoutes.login);
+          Navigator.pushNamed(context, AppRoutes.onboarding);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: secondaryColor,
@@ -121,7 +125,7 @@ class WelcomeActionButton extends StatelessWidget {
             Text(
               'Enfócate en ti mismo',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.black,
+                color: isDark ? Colors.white : Colors.black,
                 fontWeight: FontWeight.w600,
               ),
             ),
