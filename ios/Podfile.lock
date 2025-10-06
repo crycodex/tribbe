@@ -1,4 +1,6 @@
 PODS:
+  - cupertino_native (0.0.1):
+    - Flutter
   - Firebase/Auth (12.2.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 12.2.0)
@@ -58,6 +60,7 @@ PODS:
   - RecaptchaInterop (101.0.0)
 
 DEPENDENCIES:
+  - cupertino_native (from `.symlinks/plugins/cupertino_native/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -77,6 +80,8 @@ SPEC REPOS:
     - RecaptchaInterop
 
 EXTERNAL SOURCES:
+  cupertino_native:
+    :path: ".symlinks/plugins/cupertino_native/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -87,6 +92,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
 
 SPEC CHECKSUMS:
+  cupertino_native: 2bf2872026a59c9db5b72250892f7d9ca5244197
   Firebase: 26f6f8d460603af3df970ad505b16b15f5e2e9a1
   firebase_auth: b816b86f9d5a1df1a68603bf19fc13d37ddd052c
   firebase_core: c92b2e526c46f625784f19c07121cd533536d0e7

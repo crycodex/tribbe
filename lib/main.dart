@@ -6,6 +6,8 @@ import 'package:tribbe/config/theme/theme_data.dart';
 import 'package:tribbe/config/routes/route.dart';
 import 'package:tribbe/controllers/auth_controller.dart';
 import 'package:tribbe/controllers/home_controller.dart';
+import 'package:tribbe/controllers/system/theme_controller.dart';
+import 'package:tribbe/controllers/system/language_controller.dart';
 import 'package:tribbe/firebase_options.dart';
 
 void main() async {
@@ -24,15 +26,23 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthController()),
         ChangeNotifierProvider(create: (_) => HomeController()),
+        ChangeNotifierProvider(create: (_) => ThemeController()),
+        ChangeNotifierProvider(create: (_) => LanguageController()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Tribbe',
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-        home: const AuthWrapper(),
-        onGenerateRoute: AppRoutes.generateRoute,
-        initialRoute: AppRoutes.welcome,
+      child: Consumer2<ThemeController, LanguageController>(
+        builder: (context, themeController, languageController, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Tribbe',
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: themeController.themeMode,
+            locale: languageController.locale,
+            home: const AuthWrapper(),
+            onGenerateRoute: AppRoutes.generateRoute,
+            initialRoute: AppRoutes.welcome,
+          );
+        },
       ),
     );
   }
