@@ -1,4 +1,4 @@
-package com.example.tribbe
+package com.tribbe.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1038809762351",
+    "firebase_url": "https://tribbe-ed2db-default-rtdb.firebaseio.com",
+    "project_id": "tribbe-ed2db",
+    "storage_bucket": "tribbe-ed2db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038809762351:android:c49c7deebe30e07b9e14da",
+        "android_client_info": {
+          "package_name": "com.tribbe.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTnJa4Guc3Im6u1qcLkvdT9T5QPUuKDSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
