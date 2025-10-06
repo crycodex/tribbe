@@ -70,6 +70,8 @@ flutter:
   assets:
     - assets/
     - assets/character/men/welcome.png
+    - assets/icon/app/remove.png
+    - assets/icon/app/remove_dark.png
   
   #   - images/a_dot_ham.jpeg
 

@@ -5,7 +5,6 @@ import 'package:cupertino_native/cupertino_native.dart';
 import 'package:tribbe/controllers/system/theme_controller.dart';
 import 'package:tribbe/controllers/system/language_controller.dart';
 import 'package:tribbe/controllers/system/gender_controller.dart';
-import 'package:tribbe/widgets/settings/settings_action_sheet.dart';
 import 'package:tribbe/widgets/settings/theme_action_sheet.dart';
 import 'package:tribbe/widgets/settings/language_action_sheet.dart';
 import 'package:tribbe/widgets/settings/gender_action_sheet.dart';

@@ -25,79 +25,196 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: AppBar(
-        title: const Text('Iniciar Sesión'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Bienvenido de vuelta',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
-                  ),
+                // Logo tribbe
+                Image.asset(
+                  isDarkMode
+                      ? 'assets/icon/app/remove_dark.png'
+                      : 'assets/icon/app/remove.png',
+                  height: 60,
+                  width: 180,
                 ),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 32),
 
                 Text(
-                  'Inicia sesión para continuar',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                  'Hey, bienvenido a la tribu!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: colorScheme.onSurface,
                   ),
+                  textAlign: TextAlign.center,
                 ),
 
                 const SizedBox(height: 48),
 
-                // Email field
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa tu email';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Por favor ingresa un email válido';
-                    }
-                    return null;
-                  },
+                // Social login buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildSocialButton(
+                      icon: Icons.facebook,
+                      color: const Color(0xFF1877F2),
+                      onTap: () {},
+                    ),
+                    const SizedBox(width: 16),
+                    _buildSocialButton(
+                      icon: Icons.g_mobiledata,
+                      color: colorScheme.surface,
+                      borderColor: colorScheme.outline,
+                      onTap: () {},
+                    ),
+                    const SizedBox(width: 16),
+                    _buildSocialButton(
+                      icon: Icons.apple,
+                      color: colorScheme.onSurface,
+                      onTap: () {},
+                    ),
+                  ],
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
+
+                // Divider
+                Container(
+                  height: 1,
+                  color: colorScheme.outline.withOpacity(0.3),
+                ),
+
+                const SizedBox(height: 32),
+
+                // Email field
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        hintText: 'Ingresa tu email',
+                        hintStyle: TextStyle(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.primary),
+                        ),
+                        filled: true,
+                        fillColor: colorScheme.surface,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingresa tu email';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Por favor ingresa un email válido';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
 
                 // Password field
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Contraseña',
-                    prefixIcon: Icon(Icons.lock_outlined),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa tu contraseña';
-                    }
-                    if (value.length < 6) {
-                      return 'La contraseña debe tener al menos 6 caracteres';
-                    }
-                    return null;
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Contraseña',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Ingresa tu contraseña',
+                        hintStyle: TextStyle(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.primary),
+                        ),
+                        filled: true,
+                        fillColor: colorScheme.surface,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingresa tu contraseña';
+                        }
+                        if (value.length < 6) {
+                          return 'La contraseña debe tener al menos 6 caracteres';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Olvidaste tu contraseña?',
+                          style: TextStyle(
+                            color: colorScheme.onSurfaceVariant,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 24),
@@ -114,10 +231,11 @@ class _LoginViewState extends State<LoginView> {
                             : _handleLogin,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: colorScheme.primary,
-                          foregroundColor: colorScheme.onPrimary,
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(12),
                           ),
+                          elevation: 0,
                         ),
                         child: authController.isLoading
                             ? const CircularProgressIndicator(
@@ -135,7 +253,7 @@ class _LoginViewState extends State<LoginView> {
                   },
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
 
                 // Register link
                 TextButton(
@@ -143,10 +261,11 @@ class _LoginViewState extends State<LoginView> {
                     Navigator.pushNamed(context, AppRoutes.register);
                   },
                   child: Text(
-                    '¿No tienes cuenta? Regístrate',
+                    'No tienes una cuenta? Regístrate',
                     style: TextStyle(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.w500,
+                      color: colorScheme.onSurface,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
@@ -176,6 +295,43 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+  }
+
+  Widget _buildSocialButton({
+    required IconData icon,
+    required Color color,
+    Color? borderColor,
+    required VoidCallback onTap,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+          border: borderColor != null
+              ? Border.all(color: borderColor, width: 1)
+              : null,
+        ),
+        child: Icon(icon, color: _getIconColor(color, colorScheme), size: 24),
+      ),
+    );
+  }
+
+  Color _getIconColor(Color backgroundColor, ColorScheme colorScheme) {
+    // Para Facebook (azul) y Apple (negro/onSurface), usar blanco
+    if (backgroundColor == const Color(0xFF1877F2) ||
+        backgroundColor == colorScheme.onSurface) {
+      return Colors.white;
+    }
+    // Para Google (surface), usar negro en modo claro y blanco en modo oscuro
+    return colorScheme.brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black;
   }
 
   Future<void> _handleLogin() async {
