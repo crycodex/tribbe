@@ -62,11 +62,6 @@ class _LoginViewState extends State<LoginView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSocialButton(
-                      icon: Icons.facebook,
-                      color: const Color(0xFF1877F2),
-                      onTap: () {},
-                    ),
                     const SizedBox(width: 16),
                     _buildSocialButton(
                       icon: Icons.g_mobiledata,
@@ -77,6 +72,10 @@ class _LoginViewState extends State<LoginView> {
                     const SizedBox(width: 16),
                     _buildSocialButton(
                       icon: Icons.apple,
+                      backgroundColor: isDarkMode
+                          ? colorScheme.surface
+                          : colorScheme.onSurface,
+                      borderColor: colorScheme.outline,
                       color: colorScheme.onSurface,
                       onTap: () {},
                     ),
@@ -88,7 +87,7 @@ class _LoginViewState extends State<LoginView> {
                 // Divider
                 Container(
                   height: 1,
-                  color: colorScheme.outline.withOpacity(0.3),
+                  color: colorScheme.outline.withValues(alpha: 0.3),
                 ),
 
                 const SizedBox(height: 32),
@@ -306,6 +305,7 @@ class _LoginViewState extends State<LoginView> {
     required IconData icon,
     required Color color,
     Color? borderColor,
+    Color? backgroundColor,
     required VoidCallback onTap,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -316,7 +316,7 @@ class _LoginViewState extends State<LoginView> {
         width: 56,
         height: 56,
         decoration: BoxDecoration(
-          color: color,
+          color: backgroundColor ?? color,
           shape: BoxShape.circle,
           border: borderColor != null
               ? Border.all(color: borderColor, width: 1)
