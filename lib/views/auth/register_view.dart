@@ -12,12 +12,14 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -31,96 +33,202 @@ class _RegisterViewState extends State<RegisterView> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text('Registrarse'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        //back button
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Crea tu cuenta',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
+                const SizedBox(height: 24),
 
-                const SizedBox(height: 8),
-
-                Text(
-                  'Únete a la comunidad Tribbe',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                // Title
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Vamos! Regístrate en segundos.',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
                 ),
 
                 const SizedBox(height: 48),
 
+                const SizedBox(height: 24),
+
                 // Email field
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa tu email';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Por favor ingresa un email válido';
-                    }
-                    return null;
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Email',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        hintText: 'Ingresa tu email',
+                        hintStyle: TextStyle(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.primary),
+                        ),
+                        filled: true,
+                        fillColor: colorScheme.surface,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingresa tu email';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Por favor ingresa un email válido';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
 
                 // Password field
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Contraseña',
-                    prefixIcon: Icon(Icons.lock_outlined),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa tu contraseña';
-                    }
-                    if (value.length < 6) {
-                      return 'La contraseña debe tener al menos 6 caracteres';
-                    }
-                    return null;
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Contraseña',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Ingresa tu contraseña',
+                        hintStyle: TextStyle(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.primary),
+                        ),
+                        filled: true,
+                        fillColor: colorScheme.surface,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor ingresa tu contraseña';
+                        }
+                        if (value.length < 6) {
+                          return 'La contraseña debe tener al menos 6 caracteres';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
 
                 // Confirm Password field
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirmar Contraseña',
-                    prefixIcon: Icon(Icons.lock_outlined),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor confirma tu contraseña';
-                    }
-                    if (value != _passwordController.text) {
-                      return 'Las contraseñas no coinciden';
-                    }
-                    return null;
-                  },
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Confirma tu contraseña',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Ingresa tu contraseña',
+                        hintStyle: TextStyle(
+                          color: colorScheme.onSurfaceVariant,
+                          fontSize: 16,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.outline),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(color: colorScheme.primary),
+                        ),
+                        filled: true,
+                        fillColor: colorScheme.surface,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor confirma tu contraseña';
+                        }
+                        if (value != _passwordController.text) {
+                          return 'Las contraseñas no coinciden';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 24),
@@ -137,17 +245,18 @@ class _RegisterViewState extends State<RegisterView> {
                             : _handleRegister,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: colorScheme.primary,
-                          foregroundColor: colorScheme.onPrimary,
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(12),
                           ),
+                          elevation: 0,
                         ),
                         child: authController.isLoading
                             ? const CircularProgressIndicator(
                                 color: Colors.white,
                               )
                             : const Text(
-                                'Registrarse',
+                                'Regístrate',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -158,7 +267,7 @@ class _RegisterViewState extends State<RegisterView> {
                   },
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
 
                 // Login link
                 TextButton(
@@ -166,10 +275,11 @@ class _RegisterViewState extends State<RegisterView> {
                     Navigator.pushNamed(context, AppRoutes.login);
                   },
                   child: Text(
-                    '¿Ya tienes cuenta? Inicia sesión',
+                    'Ya tienes una cuenta? Inicia Sesión',
                     style: TextStyle(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.w500,
+                      color: colorScheme.onSurface,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),

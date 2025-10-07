@@ -16,6 +16,7 @@ class AuthController extends ChangeNotifier {
   bool get isLoading => _state.isLoading;
   UserModel? get user => _state.user;
   String? get errorMessage => _state.errorMessage;
+  String? get successMessage => _state.successMessage;
 
   AuthController() {
     _init();
@@ -106,6 +107,25 @@ class AuthController extends ChangeNotifier {
     }
   }
 
+  Future<void> resetPassword(String email) async {
+    try {
+      _state = const AuthState.loading();
+      notifyListeners();
+
+      await _firebaseService.sendPasswordResetEmail(email);
+
+      _state = _state.copyWith(
+        successMessage:
+            'Se ha enviado un enlace de restablecimiento a tu email',
+        isLoading: false,
+      );
+      notifyListeners();
+    } catch (e) {
+      _state = AuthState.error(e.toString());
+      notifyListeners();
+    }
+  }
+
   Future<void> sendEmailVerification() async {
     try {
       await _firebaseService.sendEmailVerification();
@@ -133,6 +153,13 @@ class AuthController extends ChangeNotifier {
   void clearError() {
     if (_state.hasError) {
       _state = _state.copyWith(errorMessage: null);
+      notifyListeners();
+    }
+  }
+
+  void clearSuccess() {
+    if (_state.successMessage != null) {
+      _state = _state.copyWith(successMessage: null);
       notifyListeners();
     }
   }

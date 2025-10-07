@@ -204,7 +204,12 @@ class _LoginViewState extends State<LoginView> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.forgotPassword,
+                          );
+                        },
                         child: Text(
                           'Olvidaste tu contraseña?',
                           style: TextStyle(

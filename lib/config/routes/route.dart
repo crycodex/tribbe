@@ -6,6 +6,7 @@ import 'package:tribbe/views/welcome/onboarding.dart';
 import 'package:tribbe/views/home/home_view.dart';
 import 'package:tribbe/views/auth/login_view.dart';
 import 'package:tribbe/views/auth/register_view.dart';
+import 'package:tribbe/views/auth/forgot_password_view.dart';
 
 class AppRoutes {
   static const String welcome = '/welcome';
@@ -13,6 +14,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String login = '/login';
   static const String register = '/register';
+  static const String forgotPassword = '/forgot-password';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -43,6 +45,12 @@ class AppRoutes {
       case register:
         return MaterialPageRoute(
           builder: (_) => const RegisterView(),
+          settings: settings,
+        );
+
+      case forgotPassword:
+        return MaterialPageRoute(
+          builder: (_) => const ForgotPasswordView(),
           settings: settings,
         );
 
