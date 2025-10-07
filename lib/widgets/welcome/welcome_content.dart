@@ -1,54 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tribbe/controllers/system/theme_controller.dart';
-import 'package:tribbe/controllers/system/language_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribbe/controllers/theme_notifier.dart';
 import 'package:tribbe/config/theme/color_scheme.dart';
 import 'package:tribbe/config/routes/route.dart';
 
-class WelcomeContent extends StatelessWidget {
+class WelcomeContent extends ConsumerWidget {
   const WelcomeContent({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer2<ThemeController, LanguageController>(
-      builder: (context, themeController, languageController, child) {
-        final isDark = themeController.isDarkMode;
-        final primaryColor = isDark
-            ? darkColorScheme.primary
-            : lightColorScheme.primary;
-        final secondaryColor = isDark
-            ? darkColorScheme.secondary
-            : lightColorScheme.secondary;
-        final onPrimaryColor = isDark
-            ? darkColorScheme.onPrimary
-            : lightColorScheme.onPrimary;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeState = ref.watch(themeNotifierProvider);
+    final isDark = themeState.isDarkMode;
+    final primaryColor = isDark
+        ? darkColorScheme.primary
+        : lightColorScheme.primary;
+    final secondaryColor = isDark
+        ? darkColorScheme.secondary
+        : lightColorScheme.secondary;
+    final onPrimaryColor = isDark
+        ? darkColorScheme.onPrimary
+        : lightColorScheme.onPrimary;
 
-        return Column(
-          children: [
-            const Spacer(flex: 1),
+    return Column(
+      children: [
+        const Spacer(flex: 1),
 
-            // Texto principal arriba
-            const WelcomeTitle(),
+        // Texto principal arriba
+        const WelcomeTitle(),
 
-            const Spacer(flex: 1),
+        const Spacer(flex: 1),
 
-            // Personaje más grande que se superpone al texto
-            const WelcomeCharacter(),
+        // Personaje más grande que se superpone al texto
+        const WelcomeCharacter(),
 
-            const Spacer(flex: 2),
+        const Spacer(flex: 2),
 
-            // Botón de acción
-            WelcomeActionButton(
-              isDark: isDark,
-              primaryColor: primaryColor,
-              secondaryColor: secondaryColor,
-              onPrimaryColor: onPrimaryColor,
-            ),
+        // Botón de acción
+        WelcomeActionButton(
+          isDark: isDark,
+          primaryColor: primaryColor,
+          secondaryColor: secondaryColor,
+          onPrimaryColor: onPrimaryColor,
+        ),
 
-            const SizedBox(height: 32),
-          ],
-        );
-      },
+        const SizedBox(height: 32),
+      ],
     );
   }
 }

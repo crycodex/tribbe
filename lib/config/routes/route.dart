@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribbe/controllers/auth_controller.dart';
 import 'package:tribbe/views/welcome/welcome_view.dart';
 import 'package:tribbe/views/welcome/onboarding.dart';
@@ -7,6 +7,11 @@ import 'package:tribbe/views/home/home_view.dart';
 import 'package:tribbe/views/auth/login_view.dart';
 import 'package:tribbe/views/auth/register_view.dart';
 import 'package:tribbe/views/auth/forgot_password_view.dart';
+
+// Provider para AuthController (temporal, migrar a Riverpod completo)
+final authControllerProvider = Provider<AuthController>(
+  (ref) => AuthController(),
+);
 
 class AppRoutes {
   static const String welcome = '/welcome';
@@ -63,28 +68,24 @@ class AppRoutes {
   }
 }
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends ConsumerWidget {
   const AuthWrapper({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<AuthController>(
-      builder: (context, authController, child) {
-        // Mostrar loading mientras se verifica el estado
-        if (authController.isLoading) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authController = ref.watch(authControllerProvider);
 
-        // Si hay un usuario autenticado, mostrar HomeView
-        if (authController.isAuthenticated) {
-          return const HomeView();
-        }
+    // Mostrar loading mientras se verifica el estado
+    if (authController.isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
-        // Si no hay usuario autenticado, mostrar WelcomeView
-        return const WelcomeView();
-      },
-    );
+    // Si hay un usuario autenticado, mostrar HomeView
+    if (authController.isAuthenticated) {
+      return const HomeView();
+    }
+
+    // Si no hay usuario autenticado, mostrar WelcomeView
+    return const WelcomeView();
   }
 }

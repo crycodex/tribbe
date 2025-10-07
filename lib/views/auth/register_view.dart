@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tribbe/controllers/auth_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribbe/config/routes/route.dart';
 
 class RegisterView extends StatefulWidget {
@@ -234,8 +233,9 @@ class _RegisterViewState extends State<RegisterView> {
                 const SizedBox(height: 24),
 
                 // Register button
-                Consumer<AuthController>(
-                  builder: (context, authController, child) {
+                Consumer(
+                  builder: (context, ref, child) {
+                    final authController = ref.watch(authControllerProvider);
                     return SizedBox(
                       width: double.infinity,
                       height: 56,
@@ -285,8 +285,9 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
 
                 // Error message
-                Consumer<AuthController>(
-                  builder: (context, authController, child) {
+                Consumer(
+                  builder: (context, ref, child) {
+                    final authController = ref.watch(authControllerProvider);
                     if (authController.errorMessage != null) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 16),
@@ -313,10 +314,8 @@ class _RegisterViewState extends State<RegisterView> {
 
   Future<void> _handleRegister() async {
     if (_formKey.currentState!.validate()) {
-      final authController = Provider.of<AuthController>(
-        context,
-        listen: false,
-      );
+      final container = ProviderScope.containerOf(context);
+      final authController = container.read(authControllerProvider);
 
       final success = await authController.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),

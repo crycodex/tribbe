@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cupertino_onboarding/cupertino_onboarding.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribbe/config/routes/route.dart';
 import 'package:tribbe/config/theme/color_scheme.dart';
-import 'package:tribbe/controllers/system/theme_controller.dart';
+import 'package:tribbe/controllers/theme_notifier.dart';
 
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeController>(
-      builder: (context, themeController, child) {
-        final isDark = themeController.isDarkMode;
+    return Consumer(
+      builder: (context, ref, child) {
+        final themeState = ref.watch(themeNotifierProvider);
+        final isDark = themeState.isDarkMode;
         final primaryColor = isDark
             ? darkColorScheme.primary
             : lightColorScheme.primary;

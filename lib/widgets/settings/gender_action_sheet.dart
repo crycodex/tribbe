@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tribbe/controllers/system/gender_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tribbe/controllers/gender_notifier.dart';
 
-class GenderActionSheet extends StatelessWidget {
-  final GenderController genderController;
-
-  const GenderActionSheet({super.key, required this.genderController});
+class GenderActionSheet extends ConsumerWidget {
+  const GenderActionSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final genderState = ref.watch(genderNotifierProvider);
+
     return CupertinoActionSheet(
       title: const Text('Seleccionar Género'),
       message: const Text('Elige tu género'),
       actions: [
         CupertinoActionSheetAction(
           onPressed: () {
-            genderController.setGender(Gender.masculine);
+            ref.read(genderNotifierProvider.notifier).setGender('Masculino');
             Navigator.pop(context);
           },
           child: Row(
@@ -25,12 +26,12 @@ class GenderActionSheet extends StatelessWidget {
               Text(
                 'Masculino',
                 style: TextStyle(
-                  fontWeight: genderController.gender == Gender.masculine
+                  fontWeight: genderState.isMale
                       ? FontWeight.bold
                       : FontWeight.normal,
                 ),
               ),
-              if (genderController.gender == Gender.masculine) ...[
+              if (genderState.isMale) ...[
                 const SizedBox(width: 8),
                 const Icon(
                   CupertinoIcons.checkmark,
@@ -42,7 +43,7 @@ class GenderActionSheet extends StatelessWidget {
         ),
         CupertinoActionSheetAction(
           onPressed: () {
-            genderController.setGender(Gender.feminine);
+            ref.read(genderNotifierProvider.notifier).setGender('Femenino');
             Navigator.pop(context);
           },
           child: Row(
@@ -53,12 +54,12 @@ class GenderActionSheet extends StatelessWidget {
               Text(
                 'Femenino',
                 style: TextStyle(
-                  fontWeight: genderController.gender == Gender.feminine
+                  fontWeight: genderState.isFemale
                       ? FontWeight.bold
                       : FontWeight.normal,
                 ),
               ),
-              if (genderController.gender == Gender.feminine) ...[
+              if (genderState.isFemale) ...[
                 const SizedBox(width: 8),
                 const Icon(
                   CupertinoIcons.checkmark,

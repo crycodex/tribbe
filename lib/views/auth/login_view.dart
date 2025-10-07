@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tribbe/controllers/auth_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tribbe/config/routes/route.dart';
 
 class LoginView extends StatefulWidget {
@@ -224,8 +223,9 @@ class _LoginViewState extends State<LoginView> {
                 const SizedBox(height: 24),
 
                 // Login button
-                Consumer<AuthController>(
-                  builder: (context, authController, child) {
+                Consumer(
+                  builder: (context, ref, child) {
+                    final authController = ref.watch(authControllerProvider);
                     return SizedBox(
                       width: double.infinity,
                       height: 56,
@@ -275,8 +275,9 @@ class _LoginViewState extends State<LoginView> {
                 ),
 
                 // Error message
-                Consumer<AuthController>(
-                  builder: (context, authController, child) {
+                Consumer(
+                  builder: (context, ref, child) {
+                    final authController = ref.watch(authControllerProvider);
                     if (authController.errorMessage != null) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 16),
@@ -341,10 +342,8 @@ class _LoginViewState extends State<LoginView> {
 
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
-      final authController = Provider.of<AuthController>(
-        context,
-        listen: false,
-      );
+      final container = ProviderScope.containerOf(context);
+      final authController = container.read(authControllerProvider);
 
       final success = await authController.signInWithEmailAndPassword(
         email: _emailController.text.trim(),

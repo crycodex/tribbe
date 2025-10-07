@@ -1,51 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 //theme
 import 'package:tribbe/config/theme/theme_data.dart';
 import 'package:tribbe/config/routes/route.dart';
-import 'package:tribbe/controllers/auth_controller.dart';
-import 'package:tribbe/controllers/home_controller.dart';
-import 'package:tribbe/controllers/system/theme_controller.dart';
-import 'package:tribbe/controllers/system/language_controller.dart';
-import 'package:tribbe/controllers/system/gender_controller.dart';
+import 'package:tribbe/controllers/theme_notifier.dart';
+import 'package:tribbe/controllers/language_notifier.dart';
+import 'package:tribbe/core/di/injection_container.dart';
 import 'package:tribbe/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  await setupDependencyInjection();
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthController()),
-        ChangeNotifierProvider(create: (_) => HomeController()),
-        ChangeNotifierProvider(create: (_) => ThemeController()),
-        ChangeNotifierProvider(create: (_) => LanguageController()),
-        ChangeNotifierProvider(create: (_) => GenderController()),
-      ],
-      child: Consumer2<ThemeController, LanguageController>(
-        builder: (context, themeController, languageController, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Tribbe',
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: themeController.themeMode,
-            locale: languageController.locale,
-            home: const AuthWrapper(),
-            onGenerateRoute: AppRoutes.generateRoute,
-            initialRoute: AppRoutes.welcome,
-          );
-        },
-      ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeState = ref.watch(themeNotifierProvider);
+    final languageState = ref.watch(languageNotifierProvider);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Tribbe',
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeState.themeMode,
+      locale: languageState.locale,
+      home: const AuthWrapper(),
+      onGenerateRoute: AppRoutes.generateRoute,
+      initialRoute: AppRoutes.welcome,
     );
   }
 }
