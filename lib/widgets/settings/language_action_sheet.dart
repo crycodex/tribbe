@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tribbe/controllers/language_notifier.dart';
+import 'package:get/get.dart';
+import 'package:tribbe/controllers/language_controller.dart';
 
-class LanguageActionSheet extends ConsumerWidget {
+class LanguageActionSheet extends StatelessWidget {
   const LanguageActionSheet({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final languageController = Get.find<LanguageController>();
+
     return CupertinoActionSheet(
       title: const Text('Seleccionar Idioma'),
       actions: [
         CupertinoActionSheetAction(
           onPressed: () {
-            ref
-                .read(languageNotifierProvider.notifier)
-                .setLocale(const Locale('es'));
+            languageController.setLocale(const Locale('es'));
             Navigator.pop(context);
           },
           child: const Row(

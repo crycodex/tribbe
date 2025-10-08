@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:tribbe/controllers/auth_controller.dart';
 import 'package:tribbe/views/welcome/welcome_view.dart';
 import 'package:tribbe/views/welcome/onboarding.dart';
@@ -7,11 +7,6 @@ import 'package:tribbe/views/home/home_view.dart';
 import 'package:tribbe/views/auth/login_view.dart';
 import 'package:tribbe/views/auth/register_view.dart';
 import 'package:tribbe/views/auth/forgot_password_view.dart';
-
-// Provider para AuthController (temporal, migrar a Riverpod completo)
-final authControllerProvider = Provider<AuthController>(
-  (ref) => AuthController(),
-);
 
 class AppRoutes {
   static const String welcome = '/welcome';
@@ -68,24 +63,26 @@ class AppRoutes {
   }
 }
 
-class AuthWrapper extends ConsumerWidget {
+class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authController = ref.watch(authControllerProvider);
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final authController = Get.find<AuthController>();
 
-    // Mostrar loading mientras se verifica el estado
-    if (authController.isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
+      // Mostrar loading mientras se verifica el estado
+      if (authController.isLoading) {
+        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      }
 
-    // Si hay un usuario autenticado, mostrar HomeView
-    if (authController.isAuthenticated) {
-      return const HomeView();
-    }
+      // Si hay un usuario autenticado, mostrar HomeView
+      if (authController.isAuthenticated) {
+        return const HomeView();
+      }
 
-    // Si no hay usuario autenticado, mostrar WelcomeView
-    return const WelcomeView();
+      // Si no hay usuario autenticado, mostrar WelcomeView
+      return const WelcomeView();
+    });
   }
 }

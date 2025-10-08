@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/legacy.dart';
-import 'package:tribbe/core/providers/storage_providers.dart';
+import 'package:get/get.dart';
+import 'package:tribbe/core/di/injection_container.dart';
 import 'package:tribbe/core/services/user_storage_service.dart';
 
-/// Estado del tema
-class ThemeState {
-  final ThemeMode themeMode;
-  final bool isLoading;
+/// Controller para el tema
+class ThemeController extends GetxController {
+  final UserStorageService _storageService = getIt<UserStorageService>();
 
-  const ThemeState({required this.themeMode, this.isLoading = false});
+  final Rx<ThemeMode> _themeMode = ThemeMode.system.obs;
+  final RxBool _isLoading = false.obs;
 
-  ThemeState copyWith({ThemeMode? themeMode, bool? isLoading}) {
-    return ThemeState(
-      themeMode: themeMode ?? this.themeMode,
-      isLoading: isLoading ?? this.isLoading,
-    );
-  }
+  ThemeMode get themeMode => _themeMode.value;
+  bool get isLoading => _isLoading.value;
 
   bool get isDarkMode {
-    if (themeMode == ThemeMode.system) {
+    if (_themeMode.value == ThemeMode.system) {
       return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
           Brightness.dark;
     }
-    return themeMode == ThemeMode.dark;
+    return _themeMode.value == ThemeMode.dark;
   }
 
   String get themeModeName {
-    switch (themeMode) {
+    switch (_themeMode.value) {
       case ThemeMode.light:
         return 'Día';
       case ThemeMode.dark:
@@ -35,14 +31,10 @@ class ThemeState {
         return 'Sistema';
     }
   }
-}
 
-/// Notifier para el tema
-class ThemeNotifier extends StateNotifier<ThemeState> {
-  final UserStorageService _storageService;
-
-  ThemeNotifier(this._storageService)
-    : super(const ThemeState(themeMode: ThemeMode.system)) {
+  @override
+  void onInit() {
+    super.onInit();
     _loadTheme();
   }
 
@@ -50,18 +42,19 @@ class ThemeNotifier extends StateNotifier<ThemeState> {
     final savedTheme = _storageService.getTheme();
     if (savedTheme != null) {
       final themeMode = _getThemeModeFromString(savedTheme);
-      state = state.copyWith(themeMode: themeMode);
+      _themeMode.value = themeMode;
     }
   }
 
   Future<void> setThemeMode(ThemeMode themeMode) async {
-    state = state.copyWith(isLoading: true);
+    _isLoading.value = true;
     await _storageService.saveTheme(_getStringFromThemeMode(themeMode));
-    state = state.copyWith(themeMode: themeMode, isLoading: false);
+    _themeMode.value = themeMode;
+    _isLoading.value = false;
   }
 
   Future<void> toggleTheme() async {
-    final newMode = state.themeMode == ThemeMode.light
+    final newMode = _themeMode.value == ThemeMode.light
         ? ThemeMode.dark
         : ThemeMode.light;
     await setThemeMode(newMode);
@@ -91,11 +84,3 @@ class ThemeNotifier extends StateNotifier<ThemeState> {
     }
   }
 }
-
-/// Provider para el controlador del tema
-final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, ThemeState>((
-  ref,
-) {
-  final storageService = ref.watch(userStorageServiceProvider);
-  return ThemeNotifier(storageService);
-});

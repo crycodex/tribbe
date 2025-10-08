@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tribbe/controllers/theme_notifier.dart';
+import 'package:get/get.dart';
+import 'package:tribbe/controllers/theme_controller.dart';
 
-class ThemeActionSheet extends ConsumerWidget {
+class ThemeActionSheet extends StatelessWidget {
   const ThemeActionSheet({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final themeController = Get.find<ThemeController>();
+
     return CupertinoActionSheet(
       title: const Text('Seleccionar Tema'),
       actions: [
         CupertinoActionSheetAction(
           onPressed: () {
-            ref
-                .read(themeNotifierProvider.notifier)
-                .setThemeMode(ThemeMode.light);
+            themeController.setThemeMode(ThemeMode.light);
             Navigator.pop(context);
           },
           child: const Row(
@@ -32,9 +32,7 @@ class ThemeActionSheet extends ConsumerWidget {
         ),
         CupertinoActionSheetAction(
           onPressed: () {
-            ref
-                .read(themeNotifierProvider.notifier)
-                .setThemeMode(ThemeMode.dark);
+            themeController.setThemeMode(ThemeMode.dark);
             Navigator.pop(context);
           },
           child: const Row(
@@ -48,9 +46,7 @@ class ThemeActionSheet extends ConsumerWidget {
         ),
         CupertinoActionSheetAction(
           onPressed: () {
-            ref
-                .read(themeNotifierProvider.notifier)
-                .setThemeMode(ThemeMode.system);
+            themeController.setThemeMode(ThemeMode.system);
             Navigator.pop(context);
           },
           child: const Row(

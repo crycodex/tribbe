@@ -1,28 +1,26 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:tribbe/models/auth_state.dart';
 import 'package:tribbe/models/user_model.dart';
 import 'package:tribbe/services/firebase_service.dart';
 
-class AuthController extends ChangeNotifier {
+class AuthController extends GetxController {
   final FirebaseService _firebaseService = FirebaseService();
 
-  AuthState _state = const AuthState.initial();
+  final Rx<AuthState> _state = const AuthState.initial().obs;
   late StreamSubscription<User?> _authSubscription;
 
-  AuthState get state => _state;
-  bool get isAuthenticated => _state.isAuthenticated;
-  bool get isLoading => _state.isLoading;
-  UserModel? get user => _state.user;
-  String? get errorMessage => _state.errorMessage;
-  String? get successMessage => _state.successMessage;
+  AuthState get state => _state.value;
+  bool get isAuthenticated => _state.value.isAuthenticated;
+  bool get isLoading => _state.value.isLoading;
+  UserModel? get user => _state.value.user;
+  String? get errorMessage => _state.value.errorMessage;
+  String? get successMessage => _state.value.successMessage;
 
-  AuthController() {
-    _init();
-  }
-
-  void _init() {
+  @override
+  void onInit() {
+    super.onInit();
     _authSubscription = _firebaseService.authStateChanges.listen(
       _onAuthStateChanged,
       onError: _onAuthError,
@@ -32,16 +30,14 @@ class AuthController extends ChangeNotifier {
   void _onAuthStateChanged(User? firebaseUser) {
     if (firebaseUser != null) {
       final userModel = UserModel.fromFirebaseUser(firebaseUser);
-      _state = AuthState.authenticated(userModel);
+      _state.value = AuthState.authenticated(userModel);
     } else {
-      _state = const AuthState.unauthenticated();
+      _state.value = const AuthState.unauthenticated();
     }
-    notifyListeners();
   }
 
   void _onAuthError(Object error) {
-    _state = AuthState.error(error.toString());
-    notifyListeners();
+    _state.value = AuthState.error(error.toString());
   }
 
   Future<bool> signInWithEmailAndPassword({
@@ -49,8 +45,7 @@ class AuthController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      _state = const AuthState.loading();
-      notifyListeners();
+      _state.value = const AuthState.loading();
 
       await _firebaseService.signInWithEmailAndPassword(
         email: email,
@@ -59,8 +54,7 @@ class AuthController extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      _state = AuthState.error(e.toString());
-      notifyListeners();
+      _state.value = AuthState.error(e.toString());
       return false;
     }
   }
@@ -70,8 +64,7 @@ class AuthController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      _state = const AuthState.loading();
-      notifyListeners();
+      _state.value = const AuthState.loading();
 
       await _firebaseService.createUserWithEmailAndPassword(
         email: email,
@@ -80,21 +73,18 @@ class AuthController extends ChangeNotifier {
 
       return true;
     } catch (e) {
-      _state = AuthState.error(e.toString());
-      notifyListeners();
+      _state.value = AuthState.error(e.toString());
       return false;
     }
   }
 
   Future<void> signOut() async {
     try {
-      _state = const AuthState.loading();
-      notifyListeners();
+      _state.value = const AuthState.loading();
 
       await _firebaseService.signOut();
     } catch (e) {
-      _state = AuthState.error(e.toString());
-      notifyListeners();
+      _state.value = AuthState.error(e.toString());
     }
   }
 
@@ -102,27 +92,23 @@ class AuthController extends ChangeNotifier {
     try {
       await _firebaseService.sendPasswordResetEmail(email);
     } catch (e) {
-      _state = AuthState.error(e.toString());
-      notifyListeners();
+      _state.value = AuthState.error(e.toString());
     }
   }
 
   Future<void> resetPassword(String email) async {
     try {
-      _state = const AuthState.loading();
-      notifyListeners();
+      _state.value = const AuthState.loading();
 
       await _firebaseService.sendPasswordResetEmail(email);
 
-      _state = _state.copyWith(
+      _state.value = _state.value.copyWith(
         successMessage:
             'Se ha enviado un enlace de restablecimiento a tu email',
         isLoading: false,
       );
-      notifyListeners();
     } catch (e) {
-      _state = AuthState.error(e.toString());
-      notifyListeners();
+      _state.value = AuthState.error(e.toString());
     }
   }
 
@@ -130,43 +116,38 @@ class AuthController extends ChangeNotifier {
     try {
       await _firebaseService.sendEmailVerification();
     } catch (e) {
-      _state = AuthState.error(e.toString());
-      notifyListeners();
+      _state.value = AuthState.error(e.toString());
     }
   }
 
   Future<void> updateProfile({String? displayName, String? photoURL}) async {
     try {
-      _state = const AuthState.loading();
-      notifyListeners();
+      _state.value = const AuthState.loading();
 
       await _firebaseService.updateProfile(
         displayName: displayName,
         photoURL: photoURL,
       );
     } catch (e) {
-      _state = AuthState.error(e.toString());
-      notifyListeners();
+      _state.value = AuthState.error(e.toString());
     }
   }
 
   void clearError() {
-    if (_state.hasError) {
-      _state = _state.copyWith(errorMessage: null);
-      notifyListeners();
+    if (_state.value.hasError) {
+      _state.value = _state.value.copyWith(errorMessage: null);
     }
   }
 
   void clearSuccess() {
-    if (_state.successMessage != null) {
-      _state = _state.copyWith(successMessage: null);
-      notifyListeners();
+    if (_state.value.successMessage != null) {
+      _state.value = _state.value.copyWith(successMessage: null);
     }
   }
 
   @override
-  void dispose() {
+  void onClose() {
     _authSubscription.cancel();
-    super.dispose();
+    super.onClose();
   }
 }

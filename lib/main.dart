@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-//theme
+import 'package:get/get.dart';
 import 'package:tribbe/config/theme/theme_data.dart';
 import 'package:tribbe/config/routes/route.dart';
-import 'package:tribbe/controllers/theme_notifier.dart';
-import 'package:tribbe/controllers/language_notifier.dart';
+import 'package:tribbe/controllers/theme_controller.dart';
+import 'package:tribbe/controllers/language_controller.dart';
+import 'package:tribbe/controllers/gender_controller.dart';
+import 'package:tribbe/controllers/auth_controller.dart';
+import 'package:tribbe/controllers/user_profile_controller.dart';
 import 'package:tribbe/core/di/injection_container.dart';
 import 'package:tribbe/firebase_options.dart';
 
@@ -13,27 +15,38 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupDependencyInjection();
-  runApp(const ProviderScope(child: MyApp()));
+  initializeControllers();
+  runApp(const MyApp());
 }
 
-class MyApp extends ConsumerWidget {
+void initializeControllers() {
+  Get.put(ThemeController());
+  Get.put(LanguageController());
+  Get.put(GenderController());
+  Get.put(AuthController());
+  Get.put(UserProfileController());
+}
+
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final themeState = ref.watch(themeNotifierProvider);
-    final languageState = ref.watch(languageNotifierProvider);
+  Widget build(BuildContext context) {
+    final themeController = Get.find<ThemeController>();
+    final languageController = Get.find<LanguageController>();
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Tribbe',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: themeState.themeMode,
-      locale: languageState.locale,
-      home: const AuthWrapper(),
-      onGenerateRoute: AppRoutes.generateRoute,
-      initialRoute: AppRoutes.welcome,
+    return Obx(
+      () => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Tribbe',
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: themeController.themeMode,
+        locale: languageController.locale,
+        home: const AuthWrapper(),
+        onGenerateRoute: AppRoutes.generateRoute,
+        initialRoute: AppRoutes.welcome,
+      ),
     );
   }
 }

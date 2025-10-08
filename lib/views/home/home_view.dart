@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tribbe/config/routes/route.dart';
-class HomeView extends ConsumerWidget {
+import 'package:get/get.dart';
+import 'package:tribbe/controllers/auth_controller.dart';
+
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tribbe'),
@@ -13,7 +14,7 @@ class HomeView extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () {
-              _showLogoutDialog(context, ref);
+              _showLogoutDialog(context);
             },
             icon: const Icon(Icons.logout),
           ),
@@ -25,7 +26,8 @@ class HomeView extends ConsumerWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
+  void _showLogoutDialog(BuildContext context) {
+    final authController = Get.find<AuthController>();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -40,7 +42,7 @@ class HomeView extends ConsumerWidget {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                ref.read(authControllerProvider).signOut();
+                authController.signOut();
               },
               child: const Text('Cerrar Sesión'),
             ),

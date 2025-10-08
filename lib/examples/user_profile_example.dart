@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tribbe/controllers/user_profile_notifier.dart';
-import 'package:tribbe/controllers/theme_notifier.dart';
-import 'package:tribbe/controllers/language_notifier.dart';
-import 'package:tribbe/controllers/gender_notifier.dart';
+import 'package:get/get.dart';
+import 'package:tribbe/controllers/user_profile_controller.dart';
+import 'package:tribbe/controllers/theme_controller.dart';
+import 'package:tribbe/controllers/language_controller.dart';
+import 'package:tribbe/controllers/gender_controller.dart';
 import 'package:tribbe/models/user_profile_model.dart';
 import 'package:tribbe/models/personal_data_model.dart';
 import 'package:tribbe/models/location_model.dart';
@@ -14,56 +14,58 @@ import 'package:tribbe/models/character_model.dart';
 import 'package:tribbe/models/measurements_model.dart';
 import 'package:tribbe/models/specific_measurements_model.dart';
 
-/// Ejemplo de uso del sistema de perfil de usuario con Riverpod
-class UserProfileExample extends ConsumerWidget {
+/// Ejemplo de uso del sistema de perfil de usuario con GetX
+class UserProfileExample extends StatelessWidget {
   const UserProfileExample({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Acceder a los estados
-    final userProfileState = ref.watch(userProfileNotifierProvider);
-    final themeState = ref.watch(themeNotifierProvider);
-    final languageState = ref.watch(languageNotifierProvider);
-    final genderState = ref.watch(genderNotifierProvider);
+  Widget build(BuildContext context) {
+    return Obx(() {
+      // Acceder a los estados
+      final userProfileController = Get.find<UserProfileController>();
+      final themeController = Get.find<ThemeController>();
+      final languageController = Get.find<LanguageController>();
+      final genderController = Get.find<GenderController>();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ejemplo de Perfil de Usuario'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: () => _saveExampleProfile(ref),
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () => _deleteProfile(ref),
-          ),
-        ],
-      ),
-      body: userProfileState.isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildSection('Tema', themeState.themeModeName),
-                  _buildSection('Idioma', languageState.languageName),
-                  _buildSection('Género', genderState.gender),
-                  const Divider(),
-                  if (userProfileState.hasProfile) ...[
-                    _buildProfileInfo(userProfileState.profile!),
-                  ] else ...[
-                    const Center(child: Text('No hay perfil guardado')),
-                  ],
-                ],
-              ),
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Ejemplo de Perfil de Usuario'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.save),
+              onPressed: () => _saveExampleProfile(),
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _changeTheme(ref),
-        child: const Icon(Icons.brightness_6),
-      ),
-    );
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () => _deleteProfile(),
+            ),
+          ],
+        ),
+        body: userProfileController.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildSection('Tema', themeController.themeModeName),
+                    _buildSection('Idioma', languageController.languageName),
+                    _buildSection('Género', genderController.gender),
+                    const Divider(),
+                    if (userProfileController.hasProfile) ...[
+                      _buildProfileInfo(userProfileController.profile!),
+                    ] else ...[
+                      const Center(child: Text('No hay perfil guardado')),
+                    ],
+                  ],
+                ),
+              ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _changeTheme(),
+          child: const Icon(Icons.brightness_6),
+        ),
+      );
+    });
   }
 
   Widget _buildSection(String title, String value) {
@@ -150,7 +152,7 @@ class UserProfileExample extends ConsumerWidget {
     );
   }
 
-  void _saveExampleProfile(WidgetRef ref) {
+  void _saveExampleProfile() {
     // Crear un perfil de ejemplo
     final exampleProfile = UserProfileModel(
       datosPersonales: PersonalDataModel(
@@ -205,14 +207,17 @@ class UserProfileExample extends ConsumerWidget {
     );
 
     // Guardar el perfil
-    ref.read(userProfileNotifierProvider.notifier).saveProfile(exampleProfile);
+    final userProfileController = Get.find<UserProfileController>();
+    userProfileController.saveProfile(exampleProfile);
   }
 
-  void _deleteProfile(WidgetRef ref) {
-    ref.read(userProfileNotifierProvider.notifier).deleteProfile();
+  void _deleteProfile() {
+    final userProfileController = Get.find<UserProfileController>();
+    userProfileController.deleteProfile();
   }
 
-  void _changeTheme(WidgetRef ref) {
-    ref.read(themeNotifierProvider.notifier).toggleTheme();
+  void _changeTheme() {
+    final themeController = Get.find<ThemeController>();
+    themeController.toggleTheme();
   }
 }

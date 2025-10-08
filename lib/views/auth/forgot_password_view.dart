@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:tribbe/config/routes/route.dart';
+import 'package:tribbe/controllers/auth_controller.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
@@ -122,39 +123,37 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   const SizedBox(height: 32),
 
                   // Validate email button
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final authController = ref.watch(authControllerProvider);
-                      return SizedBox(
-                        width: double.infinity,
-                        height: 56,
-                        child: ElevatedButton(
-                          onPressed: authController.isLoading
-                              ? null
-                              : _handleResetPassword,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: colorScheme.primary,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            elevation: 0,
+                  Obx(() {
+                    final authController = Get.find<AuthController>();
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 56,
+                      child: ElevatedButton(
+                        onPressed: authController.isLoading
+                            ? null
+                            : _handleResetPassword,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: colorScheme.primary,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          child: authController.isLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : const Text(
-                                  'Validar email',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                          elevation: 0,
                         ),
-                      );
-                    },
-                  ),
+                        child: authController.isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Validar email',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                      ),
+                    );
+                  }),
 
                   const SizedBox(height: 32),
 
@@ -174,54 +173,50 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                   ),
 
                   // Error message
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final authController = ref.watch(authControllerProvider);
-                      if (authController.errorMessage != null) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 16),
+                  Obx(() {
+                    final authController = Get.find<AuthController>();
+                    if (authController.errorMessage != null) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Text(
+                          authController.errorMessage!,
+                          style: TextStyle(
+                            color: colorScheme.error,
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),
+
+                  // Success message
+                  Obx(() {
+                    final authController = Get.find<AuthController>();
+                    if (authController.successMessage != null) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.green.shade200),
+                          ),
                           child: Text(
-                            authController.errorMessage!,
+                            authController.successMessage!,
                             style: TextStyle(
-                              color: colorScheme.error,
+                              color: Colors.green.shade800,
                               fontSize: 14,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-
-                  // Success message
-                  Consumer(
-                    builder: (context, ref, child) {
-                      final authController = ref.watch(authControllerProvider);
-                      if (authController.successMessage != null) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 16),
-                          child: Container(
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade50,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.green.shade200),
-                            ),
-                            child: Text(
-                              authController.successMessage!,
-                              style: TextStyle(
-                                color: Colors.green.shade800,
-                                fontSize: 14,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  }),
                 ],
               ),
             ),
@@ -233,8 +228,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
   Future<void> _handleResetPassword() async {
     if (_formKey.currentState!.validate()) {
-      final container = ProviderScope.containerOf(context);
-      final authController = container.read(authControllerProvider);
+      final authController = Get.find<AuthController>();
 
       await authController.resetPassword(_emailController.text.trim());
     }

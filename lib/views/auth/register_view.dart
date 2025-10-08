@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:tribbe/config/routes/route.dart';
+import 'package:tribbe/controllers/auth_controller.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -233,39 +234,35 @@ class _RegisterViewState extends State<RegisterView> {
                 const SizedBox(height: 24),
 
                 // Register button
-                Consumer(
-                  builder: (context, ref, child) {
-                    final authController = ref.watch(authControllerProvider);
-                    return SizedBox(
-                      width: double.infinity,
-                      height: 56,
-                      child: ElevatedButton(
-                        onPressed: authController.isLoading
-                            ? null
-                            : _handleRegister,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: colorScheme.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 0,
+                Obx(() {
+                  final authController = Get.find<AuthController>();
+                  return SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: authController.isLoading
+                          ? null
+                          : _handleRegister,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: authController.isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : const Text(
-                                'Regístrate',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                        elevation: 0,
                       ),
-                    );
-                  },
-                ),
+                      child: authController.isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              'Regístrate',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                    ),
+                  );
+                }),
 
                 const SizedBox(height: 32),
 
@@ -285,25 +282,23 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
 
                 // Error message
-                Consumer(
-                  builder: (context, ref, child) {
-                    final authController = ref.watch(authControllerProvider);
-                    if (authController.errorMessage != null) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 16),
-                        child: Text(
-                          authController.errorMessage!,
-                          style: TextStyle(
-                            color: colorScheme.error,
-                            fontSize: 14,
-                          ),
-                          textAlign: TextAlign.center,
+                Obx(() {
+                  final authController = Get.find<AuthController>();
+                  if (authController.errorMessage != null) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text(
+                        authController.errorMessage!,
+                        style: TextStyle(
+                          color: colorScheme.error,
+                          fontSize: 14,
                         ),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                ),
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                }),
               ],
             ),
           ),
@@ -314,8 +309,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   Future<void> _handleRegister() async {
     if (_formKey.currentState!.validate()) {
-      final container = ProviderScope.containerOf(context);
-      final authController = container.read(authControllerProvider);
+      final authController = Get.find<AuthController>();
 
       final success = await authController.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
